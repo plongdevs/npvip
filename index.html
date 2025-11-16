@@ -82,7 +82,7 @@
       margin-top: 15px;
       display: none;
       padding: 10px 16px;
-      background: orange;
+      background: #ff7b00;
       color: white;
       font-weight: 600;
       border-radius: 8px;
@@ -108,8 +108,8 @@
 
     <div id="status">❌ Chưa hoàn thành.</div>
 
-    <!-- Chỉ hiện sau khi đếm ngược xong -->
-    <a id="retryBtn" href="base.apk" download>🔄 Nhấn vào đây để tải lại nếu có sự cố</a>
+    <!-- Hiển thị sau khi đếm ngược 10 giây -->
+    <a id="retryBtn" href="#" target="_blank">👉 Nếu chưa redirect ấn lại vào đây để tải</a>
   </div>
 
   <script>
@@ -118,33 +118,37 @@
     const statusEl = document.getElementById("status");
     const retryBtn = document.getElementById("retryBtn");
 
+    const redirectURL = "https://drive.google.com/file/d/1Z187k9s-HNMeUkh2xosT8QUI6Wjtf9oc/view?usp=drivesdk"; // 🔥 ĐỔI LINK Ở ĐÂY
+
     let ttDone = false;
     let zlDone = false;
 
     function startCountdown() {
       let timeLeft = 10;
-      statusEl.innerText = `⏳ Tự động tải file sau ${timeLeft} giây...`;
+      statusEl.innerText = `⏳ Tự động redirect đến trang tải sau ${timeLeft} giây...`;
 
       const timer = setInterval(() => {
         timeLeft--;
-        statusEl.innerText = `⏳ Tự động tải file sau ${timeLeft} giây...`;
+        statusEl.innerText = `⏳ Tự động redirect đến trang tải sau ${timeLeft} giây...`;
 
         if (timeLeft <= 0) {
           clearInterval(timer);
 
-          statusEl.innerText = "⬇️ Đang tải file...";
-          window.location.href = retryBtn.href; // tự tải
-
-          // Hiện nút tải lại sau 10s
+          statusEl.innerText = "➡️ Đang redirect...";
           retryBtn.style.display = "inline-block";
+
+          retryBtn.href = redirectURL;
+
+          // Tự động redirect
+          window.location.href = redirectURL;
         }
       }, 1000);
     }
 
     function checkCompleted() {
       if (ttDone && zlDone) {
-        statusEl.innerText = "⏳ Chuẩn bị tải...";
-        startCountdown(); // bắt đầu đếm ngược
+        statusEl.innerText = "⏳ Chuẩn bị redirect...";
+        startCountdown();
       }
     }
 
@@ -153,7 +157,7 @@
         ttDone = true;
         ttBtn.classList.add("success");
         window.open("https://tiktok.com/@plongdev.128", "_blank");
-        statusEl.innerText = "✅ Đã nhấn Follow TikTok!";
+        statusEl.innerText = "✅ Đã Follow TikTok!";
         checkCompleted();
       }
     };
